@@ -8,7 +8,7 @@ namespace SportsExerciseBattle.Database
 {
     public class DatabaseHandler
     {
-        static readonly string ConnectionString = "Host=localhost;Username=postgres;Password=lglglg;Database=sportsexercisebattle";
+        static readonly string ConnectionString = "Host=localhost;Username=postgres;Password=lglglg;Database=postgres";
 
         public static int RegRequest(string username, string password)
         {
@@ -22,7 +22,7 @@ namespace SportsExerciseBattle.Database
 
             using var cmd = new NpgsqlCommand();
             cmd.Connection = connection;
-            cmd.CommandText = $"INSERT INTO credentials (username, password, token) VALUES ('{username}', '{password}', '{token}')";
+            cmd.CommandText = $"INSERT INTO SEB_Users (username, password, elo, token) VALUES ('{username}', '{password}', '100', '{token}')";
             cmd.ExecuteNonQuery();
 
             return 0;

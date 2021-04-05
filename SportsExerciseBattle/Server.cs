@@ -10,6 +10,7 @@ namespace SportsExerciseBattle
 {
     public class Server
     {
+        static readonly SemaphoreSlim ConcurrentConnections = new SemaphoreSlim(2);
         // messageData stores all messages, everything is in-memory, meaning there is no file-handling
         private static List<string> messagesData = new List<string>();
         static Task Main(string[] args)
@@ -27,6 +28,7 @@ namespace SportsExerciseBattle
 
                 while (true)
                 {
+                    ConcurrentConnections.Wait();
                     tasks.Add(Task.Run(() => ClientReception(tcpHandler)));
                     
                 }
@@ -63,6 +65,7 @@ namespace SportsExerciseBattle
 
             tcpHandler.CloseClient(webHandler.Client);
 
+            ConcurrentConnections.Release();
             Console.WriteLine(">>Client finished\n\n\n\n\n");
         }
     }

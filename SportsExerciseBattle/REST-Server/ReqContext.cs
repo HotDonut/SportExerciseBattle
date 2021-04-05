@@ -53,7 +53,6 @@ namespace SportsExerciseBattle.REST_Server
                     Console.WriteLine(entry.Key + ": " + entry.Value);
                 }
             }
-
             catch (Exception e)
             {
                 Console.WriteLine(e);
