@@ -62,7 +62,7 @@ namespace SportsExerciseBattle.REST_Server
 
         // Checks which function is appropriate for specific HttpRequest
         public void RequestCoordinator()
-        {
+        {/*
             if (DatabaseHandler.PingDataBase() == -1)
             {
                 ServerError();
@@ -119,7 +119,7 @@ namespace SportsExerciseBattle.REST_Server
                 {
                     Console.WriteLine(e);
                 }
-            }
+            }*/
         }
 
 

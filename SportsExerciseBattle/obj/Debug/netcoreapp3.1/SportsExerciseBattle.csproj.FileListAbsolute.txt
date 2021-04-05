@@ -1,0 +1,15 @@
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\bin\Debug\netcoreapp3.1\SportsExerciseBattle.exe
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\bin\Debug\netcoreapp3.1\SportsExerciseBattle.deps.json
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\bin\Debug\netcoreapp3.1\SportsExerciseBattle.runtimeconfig.json
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\bin\Debug\netcoreapp3.1\SportsExerciseBattle.runtimeconfig.dev.json
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\bin\Debug\netcoreapp3.1\SportsExerciseBattle.dll
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\bin\Debug\netcoreapp3.1\SportsExerciseBattle.pdb
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\bin\Debug\netcoreapp3.1\Newtonsoft.Json.dll
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\obj\Debug\netcoreapp3.1\SportsExerciseBattle.csprojAssemblyReference.cache
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\obj\Debug\netcoreapp3.1\SportsExerciseBattle.AssemblyInfoInputs.cache
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\obj\Debug\netcoreapp3.1\SportsExerciseBattle.AssemblyInfo.cs
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\obj\Debug\netcoreapp3.1\SportsExerciseBattle.csproj.CoreCompileInputs.cache
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\obj\Debug\netcoreapp3.1\SportsExerciseBattle.csproj.CopyComplete
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\obj\Debug\netcoreapp3.1\SportsExerciseBattle.dll
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\obj\Debug\netcoreapp3.1\SportsExerciseBattle.pdb
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\obj\Debug\netcoreapp3.1\SportsExerciseBattle.genruntimeconfig.cache

@@ -6,7 +6,7 @@ using System.IO;
 
 namespace SportsExerciseBattle.REST_Server
 {
-    interface ITCP   {
+    public interface ITCP   {
         Stream GetStream(TcpClient client);
         TcpClient AcceptTcpClient();
         int DataAvailable(TcpClient client);

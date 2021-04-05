@@ -7,33 +7,30 @@ namespace SportsExerciseBattle.REST_Server
 {
     public class WebHandler : IWebHandler
     {
-        private readonly ITcpHandler _tcpHandler;
+        private readonly ITCP _tcpHandler;
 
-        private IRequestContext _requestContext;
-
-        public Battle BattleCenter = new Battle();
+        private IReqContext _requestContext;
 
         public TcpClient Client;
 
         // used while normal operation
-        public WebHandler(ITcpHandler tcpHandler, Battle _battleCenter)
+        public WebHandler(ITCP tcpHandler)
         {
             Console.WriteLine();
-            BattleCenter = _battleCenter;
             _tcpHandler = tcpHandler;
             Client = _tcpHandler.AcceptTcpClient();
         }
 
         // for testing purposes
-        public WebHandler(ITcpHandler tcpHandler, IRequestContext requestContext)
+        public WebHandler(ITCP tcpHandler, IReqContext requestContext)
         {
             _tcpHandler = tcpHandler;
             _requestContext = requestContext;
         }
-        public WebHandler(ITcpHandler tcpHandler)
-        {
-            _tcpHandler = tcpHandler;
-        }
+        //public WebHandler(ITCP tcpHandler)
+       // {
+         //   _tcpHandler = tcpHandler;
+       // }
 
         // reads message sent by client
         // Streamreader did not work, which made testing a little harder
@@ -56,7 +53,7 @@ namespace SportsExerciseBattle.REST_Server
 
         public void WorkHttpRequest(string content, List<String> messageData)
         {
-            _requestContext = new RequestContext(content, messageData, BattleCenter);
+            _requestContext = new ReqContext(content, messageData);
             _requestContext.RequestCoordinator();
         }
 

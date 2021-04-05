@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SportsExerciseBattle.REST_Server
 {
-    interface IReqContext
+    public interface IReqContext
     {
         string StatusCode { get; set; }
         string Payload { get; set; }
