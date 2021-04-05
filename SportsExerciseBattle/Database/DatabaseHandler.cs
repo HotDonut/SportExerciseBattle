@@ -122,13 +122,14 @@ namespace SportsExerciseBattle.Database
             return JsonConvert.SerializeObject(tmpObject);
         }
 
+
         public static int PutUserdata(string token, string path, dynamic data)
         {
             string[] pathFilter = path.Split("/");
 
             long userIDtoken = GetIDfromToken(token);
 
-            if(userIDtoken == -1)
+            if (userIDtoken == -1)
             {
                 return -1;
             }
@@ -164,6 +165,31 @@ namespace SportsExerciseBattle.Database
 
             return 0;
         }
+
+        public static int PushUpEntry(string token, dynamic data)
+        {
+            long userID = GetIDfromToken(token);
+
+            if (userID == -1)
+            {
+                return -1;
+            }
+
+
+            using var conInsert = new NpgsqlConnection(ConnectionString);
+            conInsert.Open();
+
+            string sqlInsert = $"INSERT INTO SEB_History (userID, tournamentID, count, duration) VALUES ('{userID}', '0', '{data["Count"]}', '{data["DurationInSeconds"]}')";
+            using var cmdInsert = new NpgsqlCommand(sqlInsert, conInsert);
+
+            cmdInsert.ExecuteNonQuery();
+            conInsert.Close();
+
+            return 0;
+        }
+
+
+
 
         public static long GetIDfromToken(string token)
         {

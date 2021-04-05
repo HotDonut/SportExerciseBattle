@@ -268,8 +268,44 @@ namespace SportsExerciseBattle.REST_Server
                     }
                 }
             }
+            else if ((HeaderInfo["RequestPath"] == "/history") &&
+                     (HeaderInfo["RequestMethod"] == "POST"))
+            {
+                Boolean badRequest = false;
+
+                if (HeaderInfo.ContainsKey("Authorization") != true)
+                {
+                    badRequest = true;
+                }
+                else if (DatabaseHandler.CountOccurrence("seb_users", "token", HeaderInfo["Authorization"]) != 1)
+                {
+                    badRequest = true;
+                }
+
+                if (badRequest)
+                {
+                    BadRequest();
+                }
+                else
+                {
 
 
+                    if (DatabaseHandler.PushUpEntry(HeaderInfo["Authorization"], data) == -1)
+                    {
+                        BadRequest();
+                    }
+                    else
+                    {
+                        StatusCode = "200 OK";
+                        ContentType = "text/plain";
+                        var reply = "OK";
+                        Payload = reply;
+                        Console.WriteLine(">>Responding with 200 OK  ---> TOURNAMENT STARTED <---");
+                    }
+                }
+
+
+            }
         }
 
 
