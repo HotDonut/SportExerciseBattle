@@ -10,21 +10,15 @@ namespace SportsExerciseBattle
 {
     public class Server
     {
-        // Setting up multiple Clients, for demonstration purposes allow only one thread at a time,
-        // which alleviates the need for mutex
-        static readonly SemaphoreSlim ConcurrentConnections = new SemaphoreSlim(2);
-
         // messageData stores all messages, everything is in-memory, meaning there is no file-handling
         private static List<string> messagesData = new List<string>();
-
-
         static Task Main(string[] args)
         {
 
             Console.WriteLine("__________STARTING REST-SERVER__________");
 
             TCP tcpHandler = null;
-
+            
             var tasks = new List<Task>();
 
             try
@@ -33,9 +27,8 @@ namespace SportsExerciseBattle
 
                 while (true)
                 {
-                    ConcurrentConnections.Wait();
                     tasks.Add(Task.Run(() => ClientReception(tcpHandler)));
-
+                    
                 }
             }
             catch (Exception e)
@@ -70,7 +63,6 @@ namespace SportsExerciseBattle
 
             tcpHandler.CloseClient(webHandler.Client);
 
-            ConcurrentConnections.Release();
             Console.WriteLine(">>Client finished\n\n\n\n\n");
         }
     }
