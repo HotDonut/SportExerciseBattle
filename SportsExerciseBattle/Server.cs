@@ -51,13 +51,12 @@ namespace SportsExerciseBattle
         private static void ClientReception(TCP tcpHandler)
         {
             WebHandler webHandler = new WebHandler(tcpHandler);
-            var content = webHandler.GetHttpContent();
 
-            Console.WriteLine("\n\n----------RECEIVED HTTP-REQUEST----------");
-            Console.WriteLine(content);
-            Console.WriteLine("--------RECEIVED HTTP-REQUEST END--------\n");
+            //Console.WriteLine("\n\n----------RECEIVED HTTP-REQUEST----------");
+            //Console.WriteLine(content);
+            //Console.WriteLine("--------RECEIVED HTTP-REQUEST END--------\n");
 
-            webHandler.WorkHttpRequest(content, messagesData);
+            webHandler.WorkHttpRequest();
 
             Console.WriteLine("\n\n--------------SENT RESPONSE--------------");
             webHandler.SendHttpContent();

@@ -36,31 +36,17 @@ namespace SportsExerciseBattle.REST_Server
         // Streamreader did not work, which made testing a little harder
         // Instead of getting .DataAvailable() from the StreamReader-Object,
         // I had to check, if the TcpClient has available data.
-        public string GetHttpContent()
+
+        public void WorkHttpRequest()
         {
-            var stream = _tcpHandler.GetStream(Client);
-            var receivedData = "";
-
-            while (_tcpHandler.DataAvailable(Client) != 0)
-            {
-                Byte[] bytes = new Byte[4096];
-                int i = stream.Read(bytes, 0, bytes.Length);
-                receivedData += System.Text.Encoding.ASCII.GetString(bytes, 0, i);
-            }
-
-            return receivedData;
-        }
-
-        public void WorkHttpRequest(string content, List<String> messageData)
-        {
-            _requestContext = new ReqContext(content, messageData);
+            _requestContext = new ReqContext(Client);
             _requestContext.RequestCoordinator();
         }
 
         public void SendHttpContent()
         {
             var response = "HTTP/1.1" + " " + _requestContext.StatusCode + "\r\n"
-                       + "Server: " + "MTCG-Server" + "\r\n";
+                       + "Server: " + "SEB-Server" + "\r\n";
 
             if (_requestContext.Payload != "")
             {

@@ -5,6 +5,9 @@ using System.Net;
 using System.Threading;
 using Newtonsoft.Json;
 using SportsExerciseBattle.Database;
+using SportsExerciseBattle.REST_Server;
+using System.Net.Sockets;
+using System.IO;
 
 namespace SportsExerciseBattle.REST_Server
 {
@@ -16,18 +19,32 @@ namespace SportsExerciseBattle.REST_Server
         public string Payload { get; set; }
         public string ContentType { get; set; }
 
-        private List<string> messagesData = new List<string>();
 
         // runs in normal operation
-        public ReqContext(string receivedData, List<string> messagesData)
+        public ReqContext(TcpClient Client)
         {
-            // if receivedData does not resemble a HttpRequest an exception is thrown.
             try
             {
+                // if receivedData does not resemble a HttpRequest an exception is thrown.
+                var reader = new StreamReader(Client.GetStream());
+                string receivedData = "";
+                string tmpMsg;
+                do
+                {
+                    Console.Write("Bing BOng");
+                    tmpMsg = reader.ReadLine();
+                    receivedData += tmpMsg + "\r\n";
+
+                } while (tmpMsg != string.Empty);
+
+                Console.WriteLine("\n\n----------RECEIVED HTTP-REQUEST----------");
+                Console.WriteLine(receivedData);
+                Console.WriteLine("--------RECEIVED HTTP-REQUEST END--------\n");
+
                 HeaderInfo = new Dictionary<string, string>();
 
-                this.messagesData = messagesData;
-                string[] bodyOnSecond = receivedData.Split("\r\n\r\n");
+
+                //string[] bodyOnSecond = receivedData.Split("\r\n\r\n");
                 string[] dataSnippets = receivedData.Split("\r\n");
 
                 string[] headerDataFilter = dataSnippets[0].Split(" ");
@@ -46,7 +63,27 @@ namespace SportsExerciseBattle.REST_Server
                     }
                 }
 
-                HeaderInfo.Add("Body", bodyOnSecond[1]);
+
+                if (HeaderInfo.ContainsKey("Content-Length"))
+                {
+                    int ContentLength = Int32.Parse(HeaderInfo["Content-Length"]);
+                    if (ContentLength != 0)
+                    {
+                        string msg = "";
+                        int temp;
+
+                        for (int i = 0; i < ContentLength; i++)
+                        {
+                            temp = reader.Read();
+                            if (temp == -1)
+                                break;
+                            msg += (char)temp;
+                        }
+                        HeaderInfo.Add("Body", msg);
+                    }
+                }
+
+                
 
                 foreach (KeyValuePair<string, string> entry in HeaderInfo)
                 {
