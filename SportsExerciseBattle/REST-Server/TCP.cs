@@ -5,12 +5,12 @@ using System.Net.Sockets;
 
 namespace SWE1_MTCG.REST
 {
-    class TcpHandler : ITcpHandler
+    class TCP : ITCP
     {
         private TcpListener _server;
         //public TcpClient _client;
 
-        public TcpHandler()
+        public TCP()
         {
             // Connect server
             _server = new TcpListener(IPAddress.Loopback, 10001);
