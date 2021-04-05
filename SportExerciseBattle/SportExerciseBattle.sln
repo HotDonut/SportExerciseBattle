@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31025.194
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "REST-Server", "REST-Server.csproj", "{DEDD0AFB-E91A-4A91-B45A-A787F06A4691}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SportExerciseBattle", "SportExerciseBattle.csproj", "{762F5936-0001-49D2-B7ED-FE7EE854C5DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{DEDD0AFB-E91A-4A91-B45A-A787F06A4691}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DEDD0AFB-E91A-4A91-B45A-A787F06A4691}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DEDD0AFB-E91A-4A91-B45A-A787F06A4691}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DEDD0AFB-E91A-4A91-B45A-A787F06A4691}.Release|Any CPU.Build.0 = Release|Any CPU
+		{762F5936-0001-49D2-B7ED-FE7EE854C5DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{762F5936-0001-49D2-B7ED-FE7EE854C5DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{762F5936-0001-49D2-B7ED-FE7EE854C5DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{762F5936-0001-49D2-B7ED-FE7EE854C5DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {5881E4F6-9AFA-4130-937E-95C58F6667BB}
+		SolutionGuid = {287F2C2D-4964-4466-BA35-E092F11D2EF7}
 	EndGlobalSection
 EndGlobal
