@@ -4,6 +4,7 @@ using System.Dynamic;
 using System.Net;
 using System.Threading;
 using Newtonsoft.Json;
+using SportsExerciseBattle.Database;
 
 namespace SportsExerciseBattle.REST_Server
 {
@@ -52,7 +53,6 @@ namespace SportsExerciseBattle.REST_Server
                     Console.WriteLine(entry.Key + ": " + entry.Value);
                 }
             }
-
             catch (Exception e)
             {
                 Console.WriteLine(e);
@@ -62,13 +62,7 @@ namespace SportsExerciseBattle.REST_Server
 
         // Checks which function is appropriate for specific HttpRequest
         public void RequestCoordinator()
-        {/*
-            if (DatabaseHandler.PingDataBase() == -1)
-            {
-                ServerError();
-                return;
-            }
-
+        {
             dynamic data = HeaderInfo;
 
             if (HeaderInfo.ContainsKey("RequestPath") == false)
@@ -119,7 +113,7 @@ namespace SportsExerciseBattle.REST_Server
                 {
                     Console.WriteLine(e);
                 }
-            }*/
+            }
         }
 
 
