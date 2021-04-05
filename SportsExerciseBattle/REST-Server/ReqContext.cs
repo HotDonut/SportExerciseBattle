@@ -187,6 +187,89 @@ namespace SportsExerciseBattle.REST_Server
                 }
             }
 
+            else if ((HeaderInfo["RequestPath"].StartsWith("/users/")) &&
+                    (HeaderInfo["RequestMethod"] == "GET"))
+            {
+                Boolean tokenExists = true;
+
+                if (HeaderInfo.ContainsKey("Authorization") != true)
+                {
+                    tokenExists = false;
+                }
+                else if (DatabaseHandler.CountOccurrence("seb_users", "token", HeaderInfo["Authorization"]) != 1)
+                {
+                    tokenExists = false;
+                }
+
+                if (!tokenExists)
+                {
+                    BadRequest();
+                }
+                else
+                {
+                    var reply = DatabaseHandler.GetUserdata(HeaderInfo["Authorization"], HeaderInfo["RequestPath"]);
+
+                    if (reply == "-1")
+                    {
+                        BadRequest();
+                    }
+                    else
+                    {
+                        StatusCode = "200 OK";
+                        ContentType = "application/json";
+                        Payload = reply;
+                        Console.WriteLine(">>Responding with 200 OK");
+                    }
+                }
+            }
+            else if ((HeaderInfo["RequestPath"].StartsWith("/users/")) &&
+                     (HeaderInfo["RequestMethod"] == "PUT"))
+            {
+                Boolean badRequest = false;
+
+                if (HeaderInfo.ContainsKey("Authorization") != true)
+                {
+                    badRequest = true;
+                }
+                else if (DatabaseHandler.CountOccurrence("seb_users", "token", HeaderInfo["Authorization"]) != 1)
+                {
+                    badRequest = true;
+                }
+
+                var name = (string)data["Name"];
+                var bio = (string)data["Bio"];
+                var image = (string)data["Image"];
+                if ((bio == null) ||
+                    (name == null) ||
+                    (image == null))
+                {
+                    badRequest = true;
+                }
+
+                if (badRequest)
+                {
+                    BadRequest();
+                }
+                else
+                {
+
+
+                    if (DatabaseHandler.PutUserdata(HeaderInfo["Authorization"], HeaderInfo["RequestPath"], data) == -1)
+                    {
+                        BadRequest();
+                    }
+                    else
+                    {
+                        StatusCode = "200 OK";
+                        ContentType = "text/plain";
+                        var reply = "OK";
+                        Payload = reply;
+                        Console.WriteLine(">>Responding with 200 OK");
+                    }
+                }
+            }
+
+
         }
 
 
