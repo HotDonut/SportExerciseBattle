@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 
-namespace SWE1_MTCG.REST
+namespace SportsExerciseBattle.REST_Server
 {
     class TCP : ITCP
     {

@@ -4,6 +4,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using SportsExerciseBattle.REST_Server;
 
 namespace SportsExerciseBattle
 {
@@ -22,13 +23,13 @@ namespace SportsExerciseBattle
 
             Console.WriteLine("__________STARTING REST-SERVER__________");
 
-            TcpHandler tcpHandler = null;
+            TCP tcpHandler = null;
 
             var tasks = new List<Task>();
 
             try
             {
-                tcpHandler = new TcpHandler();
+                tcpHandler = new TCP();
 
                 while (true)
                 {
@@ -52,9 +53,9 @@ namespace SportsExerciseBattle
 
         // ClientReception is like a lobby in a hotel. Here every client checks in
         // and every client checks out
-        private static void ClientReception(TcpHandler tcpHandler)
+        private static void ClientReception(TCP tcpHandler)
         {
-            WebHandler webHandler = new WebHandler(tcpHandler, BattleCenter);
+            WebHandler webHandler = new WebHandler(tcpHandler);
             var content = webHandler.GetHttpContent();
 
             Console.WriteLine("\n\n----------RECEIVED HTTP-REQUEST----------");

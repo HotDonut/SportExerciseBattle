@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Sockets;
 
-namespace SWE1_MTCG.REST
+namespace SportsExerciseBattle.REST_Server
 {
     public class WebHandler : IWebHandler
     {
