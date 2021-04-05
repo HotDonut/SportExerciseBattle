@@ -151,6 +151,42 @@ namespace SportsExerciseBattle.REST_Server
                     Console.WriteLine(e);
                 }
             }
+
+            else if ((HeaderInfo["RequestPath"] == "/sessions") &&
+                (HeaderInfo["RequestMethod"] == "POST"))
+            {
+                try
+                {
+                    string usernameExists = data["Username"];
+                    string passwordExists = data["Password"];
+
+                    if ((usernameExists == null) || (passwordExists == null))
+                    {
+                        BadRequest();
+                    }
+
+                    string loginAnswer = DatabaseHandler.LoginRequest(usernameExists, passwordExists);
+
+                    if (loginAnswer == "-1")
+                    {
+                        BadRequest();
+                    }
+                    else
+                    {
+                        StatusCode = "200 OK";
+                        ContentType = "text/plain";
+                        var reply = loginAnswer;
+                        Payload = reply;
+
+                        Console.WriteLine(">>Responding with 200 OK");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
+
         }
 
 
