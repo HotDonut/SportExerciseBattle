@@ -1,24 +1,22 @@
-User
-- id
-- name
-- password
-- elo
-
-History
-- id
-- tId
-- count
-- duration
-
-
 CREATE TABLE SEB_Users (
 	userID BIGSERIAL NOT NULL PRIMARY KEY,
 	username VARCHAR(100) NOT NULL,
 	password VARCHAR(100) NOT NULL,
-	elo integer NOT NULL);
+	elo integer NOT NULL,
+	token VARCHAR(100) NOT NULL
+);
 
  CREATE TABLE SEB_History (
 	userID integer NOT NULL,
 	tournamentID integer NOT NULL,
 	count integer NOT NULL,
-	duration integer NOT NULL);
+	duration integer NOT NULL
+);
+
+CREATE TABLE SEB_Profile (
+	userID integer NOT NULL,
+	name VARCHAR(100),
+	bio VARCHAR(100),
+	image VARCHAR(100)
+);
+	
