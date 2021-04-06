@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using SportsExerciseBattle.REST_Server;
+using SportsExerciseBattle.Database;
 
 namespace SportsExerciseBattle
 {
@@ -80,6 +81,7 @@ namespace SportsExerciseBattle
                     Console.WriteLine("--------------Tournament Begins--------------");
                     Thread.Sleep(10000);
                     Console.WriteLine("--------------Tournament Ends--------------");
+                    DatabaseHandler.IncreaseELOafterTournament();
                     activeTournament = false;
                 }
             }

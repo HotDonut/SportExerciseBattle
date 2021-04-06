@@ -8,13 +8,14 @@ namespace SportsExerciseBattle.HelperObjects
     {
         public string username;
         public long Count;
-        public int ELO;
+        public int duration;
 
         public TournamentEntry(string username, long count, int elo)
         {
             this.username = username;
             this.Count = count;
-            this.ELO = elo;
+            this.duration = elo;
         }
+
     }
 }

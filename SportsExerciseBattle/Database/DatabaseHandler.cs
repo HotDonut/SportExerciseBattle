@@ -294,8 +294,8 @@ namespace SportsExerciseBattle.Database
                 {
                     var tmpObject = GetPushUpSumAndElo(tempUserID);
                     PushUpStatList.Add(tmpObject);
-                }            
-                
+                }
+
             }
             conSelect.Close();
 
@@ -331,7 +331,7 @@ namespace SportsExerciseBattle.Database
 
                 using var conSelect2 = new NpgsqlConnection(ConnectionString);
                 conSelect2.Open();
-              
+
                 string sqlSelect2 = $"SELECT username, SUM(count) as count, SUM(duration) as duration FROM SEB_History INNER JOIN SEB_Users ON SEB_History.userID = SEB_Users.userID WHERE tournamentID = {tempTournamentID} GROUP BY username";
                 using var cmdSelect2 = new NpgsqlCommand(sqlSelect2, conSelect2);
 
@@ -352,7 +352,7 @@ namespace SportsExerciseBattle.Database
 
                 var tempObject2 = new TournamentInfo(TournamentEntryList, false, tempTournamentID);
                 TournamentInfoList.Add(tempObject2);
-                
+
                 conSelect2.Close();
             }
             conSelect.Close();
@@ -361,7 +361,7 @@ namespace SportsExerciseBattle.Database
             {
                 TournamentInfoList.LastOrDefault().isActive = true;
             }
-            
+
 
 
             return JsonConvert.SerializeObject(TournamentInfoList);
@@ -415,9 +415,109 @@ namespace SportsExerciseBattle.Database
             return userID;
         }
 
+        public static void IncreaseELOafterTournament()
+        {
+            using var conSelect = new NpgsqlConnection(ConnectionString);
+            conSelect.Open();
+
+            string sqlSelect = $"SELECT SEB_users.userid, SUM(count) as count, elo  FROM SEB_History INNER JOIN SEB_Users ON SEB_History.userID = SEB_Users.userID WHERE tournamentID = (SELECT MAX(tournamentID) FROM SEB_History) GROUP BY SEB_users.userid";
+            using var cmdSelect = new NpgsqlCommand(sqlSelect, conSelect);
+
+            using var reader = cmdSelect.ExecuteReader();
+
+            var ParticipantList = new List<PushUpStats>();
+
+            while (reader.Read())
+            {
+
+                int tempUserID = reader.GetInt32(reader.GetOrdinal("userid"));
+                int tempCount = reader.GetInt32(reader.GetOrdinal("count"));
+                int tempELO = reader.GetInt32(reader.GetOrdinal("elo"));
+
+                var tempObject = new PushUpStats(tempUserID, tempCount, tempELO);
+                ParticipantList.Add(tempObject);
+            }
+
+            var WinnerList = new List<PushUpStats>();
+
+            WinnerList.Add(ParticipantList[0]);
+
+            bool firstIteration = true;
+
+            foreach (var Participant in ParticipantList)
+            {
+                if (!firstIteration)
+                {
+                    if (Participant.Count == WinnerList[0].Count)
+                    {
+                        WinnerList.Add(Participant);
+                    }
+
+                    if (Participant.Count > WinnerList[0].Count)
+                    {
+                        WinnerList.Clear();
+                        WinnerList.Add(Participant);
+                    }
+                } 
+                else
+                {
+                    firstIteration = false;
+                }
+                
+            }
+
+
+
+            foreach (var Participant in WinnerList)
+            {
+                ParticipantList.Remove(Participant);
+            }
+
+            if (WinnerList.Count() > 1)
+            {
+                foreach (var Participant in WinnerList)
+                {
+                    Participant.ELO += 1;
+                }
+            }
+            else if (WinnerList.Count() == 1)
+            {
+                WinnerList[0].ELO += 2;
+            }
+
+            foreach (var Participant in ParticipantList)
+            {
+                Participant.ELO -= 1;
+            }
+
+            updateELO(WinnerList, ParticipantList);
+            
+        }
+
+        public static void updateELO(List<PushUpStats> WinnerListUpdated, List<PushUpStats> LooserListUpdated)
+        {
+            using var conUpdate = new NpgsqlConnection(ConnectionString);
+            conUpdate.Open();
+
+            using var update = new NpgsqlCommand();
+            update.Connection = conUpdate;
+
+            foreach(var Participant in WinnerListUpdated)
+            {
+                update.CommandText = $"UPDATE SEB_Users SET elo = ({Participant.ELO}) WHERE userID = {Participant.userID}";
+                update.ExecuteNonQuery();
+            }
+
+            foreach (var Participant in LooserListUpdated)
+            {
+                update.CommandText = $"UPDATE SEB_Users SET elo = ({Participant.ELO}) WHERE userID = {Participant.userID}";
+                update.ExecuteNonQuery();
+            }
+
+
+            conUpdate.Close();
+        }
 
     }
-
-
 
 }

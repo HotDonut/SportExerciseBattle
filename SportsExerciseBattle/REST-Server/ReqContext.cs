@@ -295,10 +295,22 @@ namespace SportsExerciseBattle.REST_Server
                     else
                     {
                         activeTournament = true;
+                        float worldRecordPace = 140 / 60;
+                        int pushups = Convert.ToInt32(data["Count"]);
+                        int duration = Convert.ToInt32(data["DurationInSeconds"]);
+
+
+                        float pace = pushups/duration;
+
+                        var reply = "OK";
+
+                        if(pace > worldRecordPace)
+                        {
+                            reply = "NEW WORLD RECORD";
+                        }
 
                         StatusCode = "200 OK";
-                        ContentType = "text/plain";
-                        var reply = "OK";
+                        ContentType = "text/plain";                    
                         Payload = reply;
                         Console.WriteLine(">>Responding with 200 OK  ---> TOURNAMENT STARTED <---");
                     }
