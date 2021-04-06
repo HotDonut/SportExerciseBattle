@@ -294,9 +294,11 @@ namespace SportsExerciseBattle.Database
 
             long PushUpSum;
 
-            if ((cmdSelect.ExecuteScalar() == DBNull.Value) || (cmdSelect.ExecuteScalar() == null)) return null;
+            if ((cmdSelect.ExecuteScalar() == DBNull.Value) || (cmdSelect.ExecuteScalar() == null)) PushUpSum = 0;
             else PushUpSum = (long)cmdSelect.ExecuteScalar();
             conSelect.Close();
+
+            Console.Write("Hallo " + PushUpSum);
 
             using var conSelect2 = new NpgsqlConnection(ConnectionString);
             conSelect2.Open();
