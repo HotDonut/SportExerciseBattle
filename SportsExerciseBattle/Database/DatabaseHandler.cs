@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Linq;
 using Npgsql;
 using Newtonsoft.Json;
 using SportsExerciseBattle.HelperObjects;
@@ -303,7 +304,7 @@ namespace SportsExerciseBattle.Database
             return JsonConvert.SerializeObject(PushUpStatList);
         }
 
-        public static string GetTournamentInfo(string token, dynamic data)
+        public static string GetTournamentInfo(string token, dynamic data, bool isActive)
         {
             long userID = GetIDfromToken(token);
 
@@ -316,30 +317,54 @@ namespace SportsExerciseBattle.Database
             using var conSelect = new NpgsqlConnection(ConnectionString);
             conSelect.Open();
 
-            string sqlSelect = $"SELECT userID FROM SEB_Users";
+            string sqlSelect = $"SELECT DISTINCT tournamentID FROM SEB_History WHERE userid = {userID}";
             using var cmdSelect = new NpgsqlCommand(sqlSelect, conSelect);
 
             using var reader = cmdSelect.ExecuteReader();
 
-            var PushUpStatList = new List<PushUpStats>();
+            var TournamentInfoList = new List<TournamentInfo>();
+
 
             while (reader.Read())
             {
-                int tempUserID = reader.GetInt32(reader.GetOrdinal("userID"));
+                int tempTournamentID = reader.GetInt32(reader.GetOrdinal("tournamentID"));
 
+                using var conSelect2 = new NpgsqlConnection(ConnectionString);
+                conSelect2.Open();
+              
+                string sqlSelect2 = $"SELECT username, SUM(count) as count, SUM(duration) as duration FROM SEB_History INNER JOIN SEB_Users ON SEB_History.userID = SEB_Users.userID WHERE tournamentID = {tempTournamentID} GROUP BY username";
+                using var cmdSelect2 = new NpgsqlCommand(sqlSelect2, conSelect2);
 
-                if (GetPushUpSumAndElo(tempUserID) != null)
+                using var reader2 = cmdSelect2.ExecuteReader();
+
+                var TournamentEntryList = new List<TournamentEntry>();
+
+                while (reader2.Read())
                 {
-                    var tmpObject = GetPushUpSumAndElo(tempUserID);
-                    PushUpStatList.Add(tmpObject);
+
+                    string tempUsername = reader2.GetString(reader2.GetOrdinal("username"));
+                    int tempCount = reader2.GetInt32(reader2.GetOrdinal("count"));
+                    int tempDuration = reader2.GetInt32(reader2.GetOrdinal("duration"));
+
+                    var tempObject = new TournamentEntry(tempUsername, tempCount, tempDuration);
+                    TournamentEntryList.Add(tempObject);
                 }
 
+                var tempObject2 = new TournamentInfo(TournamentEntryList, false, tempTournamentID);
+                TournamentInfoList.Add(tempObject2);
+                
+                conSelect2.Close();
             }
             conSelect.Close();
 
+            if (isActive)
+            {
+                TournamentInfoList.LastOrDefault().isActive = true;
+            }
+            
 
 
-            return JsonConvert.SerializeObject(PushUpStatList);
+            return JsonConvert.SerializeObject(TournamentInfoList);
         }
 
         public static PushUpStats GetPushUpSumAndElo(long userID)
