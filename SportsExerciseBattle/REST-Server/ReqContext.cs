@@ -20,6 +20,7 @@ namespace SportsExerciseBattle.REST_Server
         public string ContentType { get; set; }
 
 
+
         // runs in normal operation
         public ReqContext(TcpClient Client)
         {
@@ -98,7 +99,7 @@ namespace SportsExerciseBattle.REST_Server
         }
 
         // Checks which function is appropriate for specific HttpRequest
-        public void RequestCoordinator()
+        public bool RequestCoordinator(bool activeTournament)
         {
             dynamic data = HeaderInfo;
 
@@ -290,12 +291,14 @@ namespace SportsExerciseBattle.REST_Server
                 {
 
 
-                    if (DatabaseHandler.PushUpEntry(HeaderInfo["Authorization"], data) == -1)
+                    if (DatabaseHandler.PushUpEntry(HeaderInfo["Authorization"], data, activeTournament) == -1)
                     {
                         BadRequest();
                     }
                     else
                     {
+                        activeTournament = true;
+
                         StatusCode = "200 OK";
                         ContentType = "text/plain";
                         var reply = "OK";
@@ -420,6 +423,7 @@ namespace SportsExerciseBattle.REST_Server
                 }
 
             }
+            return activeTournament;
 
         }
         private void BadRequest()

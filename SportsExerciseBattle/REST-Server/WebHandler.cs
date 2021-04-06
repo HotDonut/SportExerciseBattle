@@ -37,10 +37,10 @@ namespace SportsExerciseBattle.REST_Server
         // Instead of getting .DataAvailable() from the StreamReader-Object,
         // I had to check, if the TcpClient has available data.
 
-        public void WorkHttpRequest()
+        public bool WorkHttpRequest(bool activeTournament)
         {
             _requestContext = new ReqContext(Client);
-            _requestContext.RequestCoordinator();
+            return _requestContext.RequestCoordinator(activeTournament);
         }
 
         public void SendHttpContent()

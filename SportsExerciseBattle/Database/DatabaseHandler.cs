@@ -166,7 +166,7 @@ namespace SportsExerciseBattle.Database
             return 0;
         }
 
-        public static int PushUpEntry(string token, dynamic data)
+        public static int PushUpEntry(string token, dynamic data, bool activeTournament)
         {
             long userID = GetIDfromToken(token);
 
@@ -176,10 +176,29 @@ namespace SportsExerciseBattle.Database
             }
 
 
+            using var conSelect = new NpgsqlConnection(ConnectionString);
+            conSelect.Open();
+
+            string sqlSelect = $"SELECT MAX(tournamentID) FROM SEB_History";
+            using var cmdSelect = new NpgsqlCommand(sqlSelect, conSelect);
+
+            int tournamentID;
+
+            if ((cmdSelect.ExecuteScalar() == DBNull.Value) || (cmdSelect.ExecuteScalar() == null)) tournamentID = 0;
+            else tournamentID = (int)cmdSelect.ExecuteScalar();
+            conSelect.Close();
+
+
+            if (!activeTournament)
+            {
+                tournamentID++;
+            }
+
             using var conInsert = new NpgsqlConnection(ConnectionString);
             conInsert.Open();
 
-            string sqlInsert = $"INSERT INTO SEB_History (userID, tournamentID, count, duration) VALUES ('{userID}', '0', '{data["Count"]}', '{data["DurationInSeconds"]}')";
+
+            string sqlInsert = $"INSERT INTO SEB_History (userID, tournamentID, count, duration) VALUES ('{userID}', '{tournamentID}', '{data["Count"]}', '{data["DurationInSeconds"]}')";
             using var cmdInsert = new NpgsqlCommand(sqlInsert, conInsert);
 
             cmdInsert.ExecuteNonQuery();

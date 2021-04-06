@@ -10,9 +10,9 @@ namespace SportsExerciseBattle
 {
     public class Server
     {
-        static readonly SemaphoreSlim ConcurrentConnections = new SemaphoreSlim(2);
-        // messageData stores all messages, everything is in-memory, meaning there is no file-handling
-        private static List<string> messagesData = new List<string>();
+        private static readonly SemaphoreSlim ConcurrentConnections = new SemaphoreSlim(2);
+
+        public static bool activeTournament = false;
         static Task Main(string[] args)
         {
 
@@ -21,6 +21,8 @@ namespace SportsExerciseBattle
             TCP tcpHandler = null;
             
             var tasks = new List<Task>();
+
+            tasks.Add(Task.Run(() => TournamentMaster()));
 
             try
             {
@@ -56,7 +58,7 @@ namespace SportsExerciseBattle
             //Console.WriteLine(content);
             //Console.WriteLine("--------RECEIVED HTTP-REQUEST END--------\n");
 
-            webHandler.WorkHttpRequest();
+            activeTournament = webHandler.WorkHttpRequest(activeTournament);
 
             Console.WriteLine("\n\n--------------SENT RESPONSE--------------");
             webHandler.SendHttpContent();
@@ -66,6 +68,21 @@ namespace SportsExerciseBattle
 
             ConcurrentConnections.Release();
             Console.WriteLine(">>Client finished\n\n\n\n\n");
+        }
+
+        private static void TournamentMaster()
+        {
+            while (true)
+            {
+                Thread.Sleep(100);
+                if (activeTournament == true)
+                {
+                    Console.WriteLine("--------------Tournament Begins--------------");
+                    Thread.Sleep(10000);
+                    Console.WriteLine("--------------Tournament Ends--------------");
+                    activeTournament = false;
+                }
+            }
         }
     }
 }
