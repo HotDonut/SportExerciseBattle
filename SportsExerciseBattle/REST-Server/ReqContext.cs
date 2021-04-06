@@ -306,9 +306,122 @@ namespace SportsExerciseBattle.REST_Server
 
 
             }
+
+            /*else if ((HeaderInfo["RequestPath"] == "/history") &&
+                     (HeaderInfo["RequestMethod"] == "GET"))
+            {
+                Boolean badRequest = false;
+
+                if (HeaderInfo.ContainsKey("Authorization") != true)
+                {
+                    badRequest = true;
+                }
+                else if (DatabaseHandler.CountOccurrence("seb_users", "token", HeaderInfo["Authorization"]) != 1)
+                {
+                    badRequest = true;
+                }
+
+                if (badRequest)
+                {
+                    BadRequest();
+                }
+                else
+                {
+
+                    var reply = DatabaseHandler.DisplayAllEntries(HeaderInfo["Authorization"], data);
+
+                    if ( reply == "-1")
+                    {
+                        BadRequest();
+                    }
+                    else
+                    {
+                        StatusCode = "200 OK";
+                        ContentType = "text/plain";
+                        Payload = reply;
+                        Console.WriteLine(">>Responding with 200 OK");
+                    }
+                }
+
+
+            }*/
+
+            else if ((HeaderInfo["RequestPath"] == "/stats") &&
+                     (HeaderInfo["RequestMethod"] == "GET"))
+            {
+                Boolean badRequest = false;
+
+                if (HeaderInfo.ContainsKey("Authorization") != true)
+                {
+                    badRequest = true;
+                }
+                else if (DatabaseHandler.CountOccurrence("seb_users", "token", HeaderInfo["Authorization"]) != 1)
+                {
+                    badRequest = true;
+                }
+
+                if (badRequest)
+                {
+                    BadRequest();
+                }
+                else
+                {
+
+                    var reply = DatabaseHandler.GetStats(HeaderInfo["Authorization"], data);
+
+                    if (reply == "-1")
+                    {
+                        BadRequest();
+                    }
+                    else
+                    {
+                        StatusCode = "200 OK";
+                        ContentType = "text/plain";
+                        Payload = reply;
+                        Console.WriteLine(">>Responding with 200 OK");
+                    }
+                }
+            }
+
+            else if ((HeaderInfo["RequestPath"] == "/score") &&
+                 (HeaderInfo["RequestMethod"] == "GET"))
+            {
+                Boolean badRequest = false;
+
+                if (HeaderInfo.ContainsKey("Authorization") != true)
+                {
+                    badRequest = true;
+                }
+                else if (DatabaseHandler.CountOccurrence("seb_users", "token", HeaderInfo["Authorization"]) != 1)
+                {
+                    badRequest = true;
+                }
+
+                if (badRequest)
+                {
+                    BadRequest();
+                }
+                else
+                {
+
+                    var reply = DatabaseHandler.GetScoreboard(HeaderInfo["Authorization"], data);
+
+                    if (reply == "-1")
+                    {
+                        BadRequest();
+                    }
+                    else
+                    {
+                        StatusCode = "200 OK";
+                        ContentType = "text/plain";
+                        Payload = reply;
+                        Console.WriteLine(">>Responding with 200 OK");
+                    }
+                }
+
+            }
+
         }
-
-
         private void BadRequest()
         {
             StatusCode = "400 Bad Request";

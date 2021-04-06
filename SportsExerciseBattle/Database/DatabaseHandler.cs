@@ -188,8 +188,131 @@ namespace SportsExerciseBattle.Database
             return 0;
         }
 
+        /*public static string DisplayAllEntries(string token, dynamic data)
+        {
+            long userID = GetIDfromToken(token);
+
+            if (userID == -1)
+            {
+                return "-1";
+            }
 
 
+            using var conSelect = new NpgsqlConnection(ConnectionString);
+            conSelect.Open();
+
+            string sqlSelect = $"SELECT tournamentid, count, duration FROM SEB_History WHERE userID = '{userID}'";
+            using var cmdSelect = new NpgsqlCommand(sqlSelect, conSelect);
+
+            using var reader = cmdSelect.ExecuteReader();
+
+            var pushUpEntryList = new List<PushUpEntry>();
+
+            while (reader.Read())
+            {
+                int tournamentID = reader.GetInt32(reader.GetOrdinal("tournamentid"));
+                int count = reader.GetInt32(reader.GetOrdinal("count"));
+                int duration = reader.GetInt32(reader.GetOrdinal("duration"));
+
+                var tmpObject = new PushUpEntry(tournamentID, count, duration);
+
+                pushUpEntryList.Add(tmpObject);
+            }
+
+            return JsonConvert.SerializeObject(pushUpEntryList);
+        }*/
+
+
+        public static string GetStats(string token, dynamic data)
+        {
+            long userID = GetIDfromToken(token);
+
+            if (userID == -1)
+            {
+                return "-1";
+            }
+
+
+            if (GetPushUpSumAndElo(userID) == null)
+            {
+                return "-1";
+            }
+
+            var tmpObject = GetPushUpSumAndElo(userID);
+
+
+            return JsonConvert.SerializeObject(tmpObject);
+        }
+
+
+        public static string GetScoreboard(string token, dynamic data)
+        {
+            long userID = GetIDfromToken(token);
+
+            if (userID == -1)
+            {
+                return "-1";
+            }
+
+
+            using var conSelect = new NpgsqlConnection(ConnectionString);
+            conSelect.Open();
+
+            string sqlSelect = $"SELECT userID FROM SEB_Users";
+            using var cmdSelect = new NpgsqlCommand(sqlSelect, conSelect);
+
+            using var reader = cmdSelect.ExecuteReader();
+
+            var PushUpStatList = new List<PushUpStats>();
+
+            while (reader.Read())
+            {
+                int tempUserID = reader.GetInt32(reader.GetOrdinal("userID"));
+
+
+                if (GetPushUpSumAndElo(tempUserID) != null)
+                {
+                    var tmpObject = GetPushUpSumAndElo(tempUserID);
+                    PushUpStatList.Add(tmpObject);
+                }            
+                
+            }
+            conSelect.Close();
+
+
+
+            return JsonConvert.SerializeObject(PushUpStatList);
+        }
+
+        public static PushUpStats GetPushUpSumAndElo(long userID)
+        {
+            using var conSelect = new NpgsqlConnection(ConnectionString);
+            conSelect.Open();
+
+            string sqlSelect = $"SELECT SUM(count) FROM SEB_History WHERE userID = '{userID}'";
+            using var cmdSelect = new NpgsqlCommand(sqlSelect, conSelect);
+
+            long PushUpSum;
+
+            if ((cmdSelect.ExecuteScalar() == DBNull.Value) || (cmdSelect.ExecuteScalar() == null)) return null;
+            else PushUpSum = (long)cmdSelect.ExecuteScalar();
+            conSelect.Close();
+
+            using var conSelect2 = new NpgsqlConnection(ConnectionString);
+            conSelect2.Open();
+
+            string sqlSelect2 = $"SELECT elo FROM SEB_users WHERE userID = '{userID}'";
+            using var cmdSelect2 = new NpgsqlCommand(sqlSelect2, conSelect2);
+
+            int ELO;
+
+            if ((cmdSelect2.ExecuteScalar() == DBNull.Value) || (cmdSelect2.ExecuteScalar() == null)) return null;
+            else ELO = (int)cmdSelect2.ExecuteScalar();
+            conSelect2.Close();
+
+            var tmpObject = new PushUpStats((int)userID, PushUpSum, ELO);
+            return tmpObject;
+        }
 
         public static long GetIDfromToken(string token)
         {
@@ -206,6 +329,8 @@ namespace SportsExerciseBattle.Database
 
             return userID;
         }
+
+
     }
 
 
