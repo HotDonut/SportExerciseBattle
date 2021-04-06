@@ -19,6 +19,10 @@ namespace SportsExerciseBattle.REST_Server
         public string Payload { get; set; }
         public string ContentType { get; set; }
 
+        public ReqContext()
+        {
+            HeaderInfo = new Dictionary<string, string>();
+        }
 
 
         // runs in normal operation
@@ -26,7 +30,6 @@ namespace SportsExerciseBattle.REST_Server
         {
             try
             {
-                // if receivedData does not resemble a HttpRequest an exception is thrown.
                 var reader = new StreamReader(Client.GetStream());
                 string receivedData = "";
                 string tmpMsg;
@@ -80,7 +83,7 @@ namespace SportsExerciseBattle.REST_Server
                 }
 
                 Console.WriteLine("\n\n----------RECEIVED HTTP-REQUEST----------");
-                              
+
                 foreach (KeyValuePair<string, string> entry in HeaderInfo)
                 {
                     Console.WriteLine(entry.Key + ": " + entry.Value);
@@ -98,7 +101,9 @@ namespace SportsExerciseBattle.REST_Server
         // Checks which function is appropriate for specific HttpRequest
         public bool RequestCoordinator(bool activeTournament)
         {
+
             dynamic data = HeaderInfo;
+
 
             if (HeaderInfo.ContainsKey("RequestPath") == false)
             {
@@ -189,6 +194,7 @@ namespace SportsExerciseBattle.REST_Server
                     (HeaderInfo["RequestMethod"] == "GET"))
             {
                 Boolean tokenExists = true;
+
 
                 if (HeaderInfo.ContainsKey("Authorization") != true)
                 {
@@ -300,17 +306,17 @@ namespace SportsExerciseBattle.REST_Server
                         int duration = Convert.ToInt32(data["DurationInSeconds"]);
 
 
-                        float pace = pushups/duration;
+                        float pace = pushups / duration;
 
                         var reply = "OK";
 
-                        if(pace > worldRecordPace)
+                        if (pace > worldRecordPace)
                         {
                             reply = "NEW WORLD RECORD";
                         }
 
                         StatusCode = "200 OK";
-                        ContentType = "text/plain";                    
+                        ContentType = "text/plain";
                         Payload = reply;
                         Console.WriteLine(">>Responding with 200 OK  ---> TOURNAMENT STARTED <---");
                     }
@@ -452,9 +458,9 @@ namespace SportsExerciseBattle.REST_Server
                 }
                 else
                 {
-                    
+
                     var reply = DatabaseHandler.GetTournamentInfo(HeaderInfo["Authorization"], data, activeTournament);
-                        
+
 
                     if (reply == "-1")
                     {
@@ -470,6 +476,10 @@ namespace SportsExerciseBattle.REST_Server
                 }
 
             }
+            else
+            {
+                BadRequest();
+            }
             return activeTournament;
 
         }
@@ -479,14 +489,6 @@ namespace SportsExerciseBattle.REST_Server
             ContentType = "text/plain";
             Payload = "Bad Request";
             Console.WriteLine(">>Responding with 400 Bad Request");
-        }
-
-        private void ServerError()
-        {
-            StatusCode = "500 Internal Server Error";
-            ContentType = "text/plain";
-            Payload = "500 Internal Server Error";
-            Console.WriteLine(">>Responding with 500 Internal Server Error");
         }
     }
 }

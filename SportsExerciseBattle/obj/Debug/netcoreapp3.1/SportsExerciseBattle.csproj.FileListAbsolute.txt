@@ -14,3 +14,5 @@ E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\obj\Debug\n
 E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\obj\Debug\netcoreapp3.1\SportsExerciseBattle.pdb
 E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\obj\Debug\netcoreapp3.1\SportsExerciseBattle.genruntimeconfig.cache
 E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\bin\Debug\netcoreapp3.1\Npgsql.dll
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\bin\Debug\netcoreapp3.1\Castle.Core.dll
+E:\Studium\Technikum\SS2021\SportExerciseBattle\SportsExerciseBattle\bin\Debug\netcoreapp3.1\Moq.dll

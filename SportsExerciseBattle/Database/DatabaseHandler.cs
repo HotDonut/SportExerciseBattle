@@ -518,6 +518,27 @@ namespace SportsExerciseBattle.Database
             conUpdate.Close();
         }
 
+        public static int PingDataBase()
+        {
+            try
+            {
+                using var con = new NpgsqlConnection(ConnectionString);
+                con.Open();
+
+                string sql = $"SELECT COUNT(*) FROM seb_users";
+                using var cmd = new NpgsqlCommand(sql, con);
+
+                cmd.ExecuteScalar();
+                con.Close();
+                return 0;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return -1;
+            }
+        }
+
     }
 
 }

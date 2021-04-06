@@ -23,7 +23,7 @@ namespace SportsExerciseBattle
             
             var tasks = new List<Task>();
 
-            tasks.Add(Task.Run(() => TournamentMaster()));
+            tasks.Add(Task.Run(() => TournamentMaster(10000)));
 
             try
             {
@@ -71,18 +71,18 @@ namespace SportsExerciseBattle
             Console.WriteLine(">>Client finished\n\n\n\n\n");
         }
 
-        private static void TournamentMaster()
+        public static void TournamentMaster(int time)
         {
             while (true)
             {
                 Thread.Sleep(100);
-                if (activeTournament == true)
+                if (Server.activeTournament == true)
                 {
                     Console.WriteLine("--------------Tournament Begins--------------");
-                    Thread.Sleep(10000);
+                    Thread.Sleep(time);
                     Console.WriteLine("--------------Tournament Ends--------------");
                     DatabaseHandler.IncreaseELOafterTournament();
-                    activeTournament = false;
+                    Server.activeTournament = false;
                 }
             }
         }
