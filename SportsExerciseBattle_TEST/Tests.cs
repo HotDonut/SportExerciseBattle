@@ -31,21 +31,10 @@ namespace SportsExerciseBattle_TEST
             var memoryStream = new MemoryStream();
             memoryStream.Position = 0;
 
-            mockTcpHandler
-                .Setup(c => c.GetStream(It.IsAny<TcpClient>()))
-                .Returns(memoryStream);
-
-            mockRequestContext
-                .Setup(c => c.StatusCode)
-                .Returns("200 OK");
-
-            mockRequestContext
-                .Setup(c => c.ContentType)
-                .Returns("text/plain");
-
-            mockRequestContext
-                .Setup(c => c.Payload)
-                .Returns("SendHttpContentTest");
+            mockTcpHandler.Setup(c => c.GetStream(It.IsAny<TcpClient>())).Returns(memoryStream);
+            mockRequestContext.Setup(c => c.StatusCode).Returns("200 OK");
+            mockRequestContext.Setup(c => c.ContentType).Returns("text/plain");
+           mockRequestContext.Setup(c => c.Payload).Returns("SendHttpContentTest");
 
             WebHandler contentWriter = new WebHandler(mockTcpHandler.Object, mockRequestContext.Object);
 
