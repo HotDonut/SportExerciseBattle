@@ -440,10 +440,8 @@ namespace SportsExerciseBattle.REST_Server
                 }
                 else
                 {
-
-
-                        var reply = DatabaseHandler.GetTournamentInfo(HeaderInfo["Authorization"], data);
-
+                    
+                    var reply = DatabaseHandler.GetTournamentInfo(HeaderInfo["Authorization"], data, activeTournament);
                         
 
                     if (reply == "-1")

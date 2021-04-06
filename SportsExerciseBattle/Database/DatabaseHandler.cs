@@ -303,6 +303,45 @@ namespace SportsExerciseBattle.Database
             return JsonConvert.SerializeObject(PushUpStatList);
         }
 
+        public static string GetTournamentInfo(string token, dynamic data)
+        {
+            long userID = GetIDfromToken(token);
+
+            if (userID == -1)
+            {
+                return "-1";
+            }
+
+
+            using var conSelect = new NpgsqlConnection(ConnectionString);
+            conSelect.Open();
+
+            string sqlSelect = $"SELECT userID FROM SEB_Users";
+            using var cmdSelect = new NpgsqlCommand(sqlSelect, conSelect);
+
+            using var reader = cmdSelect.ExecuteReader();
+
+            var PushUpStatList = new List<PushUpStats>();
+
+            while (reader.Read())
+            {
+                int tempUserID = reader.GetInt32(reader.GetOrdinal("userID"));
+
+
+                if (GetPushUpSumAndElo(tempUserID) != null)
+                {
+                    var tmpObject = GetPushUpSumAndElo(tempUserID);
+                    PushUpStatList.Add(tmpObject);
+                }
+
+            }
+            conSelect.Close();
+
+
+
+            return JsonConvert.SerializeObject(PushUpStatList);
+        }
+
         public static PushUpStats GetPushUpSumAndElo(long userID)
         {
             using var conSelect = new NpgsqlConnection(ConnectionString);
