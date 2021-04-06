@@ -23,21 +23,6 @@ namespace SportsExerciseBattle_TEST
         {
         }
 
-        /*[Test]
-        public void TestReqContext_Constructor_GET()
-        {
-            // arrange
-            var mockedTcpClient = new Mock<TcpClient>();
-            mockedTcpClient.Setup(x => x.AcceptTcpClient()).Returns(new Mock<TcpClient>().Object);
-
-            // act
-            ClientHandler clientHandler = new ClientHandler(mockedTcpHandler.Object);
-
-            // assert
-            mockedTcpHandler.Verify(x => x.AcceptTcpClient());
-
-        }*/
-
         [Test]
         public void SendHttpContentTest()
         {
@@ -108,6 +93,23 @@ namespace SportsExerciseBattle_TEST
         }
 
         [Test]
+        public void StatsTestSuccess()
+        {
+            // There is a dummy person in the Database with username Test
+            var HeaderInfo = new Dictionary<string, string>();
+            HeaderInfo["RequestPath"] = "/stats";
+            HeaderInfo["RequestMethod"] = "GET";
+            HeaderInfo["Authorization"] = "Basic Test-sebToken";
+
+            ReqContext reqContext = new ReqContext();
+            reqContext.HeaderInfo = HeaderInfo;
+
+            reqContext.RequestCoordinator(true);
+            Assert.AreEqual("200 OK", reqContext.StatusCode);
+            Assert.AreEqual("{\"userID\":1,\"Count\":0,\"ELO\":1337}", reqContext.Payload);
+        }
+
+        [Test]
         public void HistoryTestSuccess()
         {
             // There is a dummy person in the Database with username Test
@@ -122,6 +124,41 @@ namespace SportsExerciseBattle_TEST
             reqContext.RequestCoordinator(true);
             Assert.AreEqual("200 OK", reqContext.StatusCode);
             Assert.AreEqual("[]", reqContext.Payload);
+        }
+
+        [Test]
+        public void TournamentTestSuccess()
+        {
+            // There is a dummy person in the Database with username Test
+            var HeaderInfo = new Dictionary<string, string>();
+            HeaderInfo["RequestPath"] = "/tournament";
+            HeaderInfo["RequestMethod"] = "GET";
+            HeaderInfo["Authorization"] = "Basic Test-sebToken";
+
+            ReqContext reqContext = new ReqContext();
+            reqContext.HeaderInfo = HeaderInfo;
+          
+            reqContext.RequestCoordinator(false);
+            Assert.AreEqual("200 OK", reqContext.StatusCode);
+            Assert.AreEqual("[]", reqContext.Payload);
+        }
+
+        [Test]
+        public void GetTokenTestSuccess()
+        {
+            // There is a dummy person in the Database with username Test
+            var HeaderInfo = new Dictionary<string, string>();
+            HeaderInfo["RequestPath"] = "/sessions";
+            HeaderInfo["RequestMethod"] = "POST";
+            HeaderInfo["Username"] = "Test";
+            HeaderInfo["Password"] = "123";
+
+            ReqContext reqContext = new ReqContext();
+            reqContext.HeaderInfo = HeaderInfo;
+
+            reqContext.RequestCoordinator(false);
+            Assert.AreEqual("200 OK", reqContext.StatusCode);
+            Assert.AreEqual("Basic Test-sebToken", reqContext.Payload);
         }
 
         [Test]
