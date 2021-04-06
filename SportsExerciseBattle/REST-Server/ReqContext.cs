@@ -32,15 +32,10 @@ namespace SportsExerciseBattle.REST_Server
                 string tmpMsg;
                 do
                 {
-                    Console.Write("Bing BOng");
                     tmpMsg = reader.ReadLine();
                     receivedData += tmpMsg + "\r\n";
 
                 } while (tmpMsg != string.Empty);
-
-                Console.WriteLine("\n\n----------RECEIVED HTTP-REQUEST----------");
-                Console.WriteLine(receivedData);
-                Console.WriteLine("--------RECEIVED HTTP-REQUEST END--------\n");
 
                 HeaderInfo = new Dictionary<string, string>();
 
@@ -84,12 +79,14 @@ namespace SportsExerciseBattle.REST_Server
                     }
                 }
 
-                
-
+                Console.WriteLine("\n\n----------RECEIVED HTTP-REQUEST----------");
+                              
                 foreach (KeyValuePair<string, string> entry in HeaderInfo)
                 {
                     Console.WriteLine(entry.Key + ": " + entry.Value);
                 }
+
+                Console.WriteLine("--------RECEIVED HTTP-REQUEST END--------\n");
             }
             catch (Exception e)
             {
@@ -310,7 +307,7 @@ namespace SportsExerciseBattle.REST_Server
 
             }
 
-            /*else if ((HeaderInfo["RequestPath"] == "/history") &&
+            else if ((HeaderInfo["RequestPath"] == "/history") &&
                      (HeaderInfo["RequestMethod"] == "GET"))
             {
                 Boolean badRequest = false;
@@ -333,7 +330,7 @@ namespace SportsExerciseBattle.REST_Server
 
                     var reply = DatabaseHandler.DisplayAllEntries(HeaderInfo["Authorization"], data);
 
-                    if ( reply == "-1")
+                    if (reply == "-1")
                     {
                         BadRequest();
                     }
@@ -347,7 +344,7 @@ namespace SportsExerciseBattle.REST_Server
                 }
 
 
-            }*/
+            }
 
             else if ((HeaderInfo["RequestPath"] == "/stats") &&
                      (HeaderInfo["RequestMethod"] == "GET"))
@@ -408,6 +405,46 @@ namespace SportsExerciseBattle.REST_Server
                 {
 
                     var reply = DatabaseHandler.GetScoreboard(HeaderInfo["Authorization"], data);
+
+                    if (reply == "-1")
+                    {
+                        BadRequest();
+                    }
+                    else
+                    {
+                        StatusCode = "200 OK";
+                        ContentType = "text/plain";
+                        Payload = reply;
+                        Console.WriteLine(">>Responding with 200 OK");
+                    }
+                }
+            }
+
+            else if ((HeaderInfo["RequestPath"] == "/tournament") &&
+             (HeaderInfo["RequestMethod"] == "GET"))
+            {
+                Boolean badRequest = false;
+
+                if (HeaderInfo.ContainsKey("Authorization") != true)
+                {
+                    badRequest = true;
+                }
+                else if (DatabaseHandler.CountOccurrence("seb_users", "token", HeaderInfo["Authorization"]) != 1)
+                {
+                    badRequest = true;
+                }
+
+                if (badRequest)
+                {
+                    BadRequest();
+                }
+                else
+                {
+
+
+                        var reply = DatabaseHandler.GetTournamentInfo(HeaderInfo["Authorization"], data);
+
+                        
 
                     if (reply == "-1")
                     {

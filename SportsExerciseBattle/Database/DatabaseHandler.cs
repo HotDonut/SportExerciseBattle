@@ -207,7 +207,7 @@ namespace SportsExerciseBattle.Database
             return 0;
         }
 
-        /*public static string DisplayAllEntries(string token, dynamic data)
+        public static string DisplayAllEntries(string token, dynamic data)
         {
             long userID = GetIDfromToken(token);
 
@@ -220,7 +220,7 @@ namespace SportsExerciseBattle.Database
             using var conSelect = new NpgsqlConnection(ConnectionString);
             conSelect.Open();
 
-            string sqlSelect = $"SELECT tournamentid, count, duration FROM SEB_History WHERE userID = '{userID}'";
+            string sqlSelect = $"SELECT tournamentID, count, duration FROM SEB_History WHERE userID = '{userID}'";
             using var cmdSelect = new NpgsqlCommand(sqlSelect, conSelect);
 
             using var reader = cmdSelect.ExecuteReader();
@@ -239,7 +239,7 @@ namespace SportsExerciseBattle.Database
             }
 
             return JsonConvert.SerializeObject(pushUpEntryList);
-        }*/
+        }
 
 
         public static string GetStats(string token, dynamic data)
