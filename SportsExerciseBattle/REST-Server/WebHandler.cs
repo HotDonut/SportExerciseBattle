@@ -26,16 +26,7 @@ namespace SportsExerciseBattle.REST_Server
         {
             _tcpHandler = tcpHandler;
             _requestContext = requestContext;
-        }
-        //public WebHandler(ITCP tcpHandler)
-       // {
-         //   _tcpHandler = tcpHandler;
-       // }
-
-        // reads message sent by client
-        // Streamreader did not work, which made testing a little harder
-        // Instead of getting .DataAvailable() from the StreamReader-Object,
-        // I had to check, if the TcpClient has available data.
+        }    
 
         public bool WorkHttpRequest(bool activeTournament)
         {

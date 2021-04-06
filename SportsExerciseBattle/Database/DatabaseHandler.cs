@@ -381,8 +381,6 @@ namespace SportsExerciseBattle.Database
             else PushUpSum = (long)cmdSelect.ExecuteScalar();
             conSelect.Close();
 
-            Console.Write("Hallo " + PushUpSum);
-
             using var conSelect2 = new NpgsqlConnection(ConnectionString);
             conSelect2.Open();
 
@@ -458,12 +456,12 @@ namespace SportsExerciseBattle.Database
                         WinnerList.Clear();
                         WinnerList.Add(Participant);
                     }
-                } 
+                }
                 else
                 {
                     firstIteration = false;
                 }
-                
+
             }
 
 
@@ -491,7 +489,7 @@ namespace SportsExerciseBattle.Database
             }
 
             updateELO(WinnerList, ParticipantList);
-            
+
         }
 
         public static void updateELO(List<PushUpStats> WinnerListUpdated, List<PushUpStats> LooserListUpdated)
@@ -502,7 +500,7 @@ namespace SportsExerciseBattle.Database
             using var update = new NpgsqlCommand();
             update.Connection = conUpdate;
 
-            foreach(var Participant in WinnerListUpdated)
+            foreach (var Participant in WinnerListUpdated)
             {
                 update.CommandText = $"UPDATE SEB_Users SET elo = ({Participant.ELO}) WHERE userID = {Participant.userID}";
                 update.ExecuteNonQuery();
