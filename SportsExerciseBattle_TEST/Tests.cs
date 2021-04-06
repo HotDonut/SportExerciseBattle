@@ -50,7 +50,6 @@ namespace SportsExerciseBattle_TEST
             Assert.AreEqual(expectedValue, actualValue);
         }
 
-
         [Test]
         public void BadRequestWrongMethodTest()
         {

@@ -5,7 +5,7 @@ using System.Net.Sockets;
 
 namespace SportsExerciseBattle.REST_Server
 {
-    public class WebHandler : IWebHandler
+    public class WebHandler
     {
         private readonly ITCP _tcpHandler;
 

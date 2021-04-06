@@ -49,15 +49,9 @@ namespace SportsExerciseBattle
             }
         }
 
-        // ClientReception is like a lobby in a hotel. Here every client checks in
-        // and every client checks out
         private static void ClientReception(TCP tcpHandler)
         {
             WebHandler webHandler = new WebHandler(tcpHandler);
-
-            //Console.WriteLine("\n\n----------RECEIVED HTTP-REQUEST----------");
-            //Console.WriteLine(content);
-            //Console.WriteLine("--------RECEIVED HTTP-REQUEST END--------\n");
 
             activeTournament = webHandler.WorkHttpRequest(activeTournament);
 

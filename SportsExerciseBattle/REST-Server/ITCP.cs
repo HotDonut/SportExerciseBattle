@@ -9,6 +9,5 @@ namespace SportsExerciseBattle.REST_Server
     public interface ITCP   {
         Stream GetStream(TcpClient client);
         TcpClient AcceptTcpClient();
-        int DataAvailable(TcpClient client);
     }
 }

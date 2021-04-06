@@ -8,11 +8,9 @@ namespace SportsExerciseBattle.REST_Server
     class TCP : ITCP
     {
         private TcpListener _server;
-        //public TcpClient _client;
 
         public TCP()
         {
-            // Connect server
             _server = new TcpListener(IPAddress.Loopback, 10001);
             _server.Start(5);
         }
@@ -39,9 +37,5 @@ namespace SportsExerciseBattle.REST_Server
 
         public void Stop() => _server.Stop();
 
-        public int DataAvailable(TcpClient client)
-        {
-            return client.Available;
-        }
     }
 }
